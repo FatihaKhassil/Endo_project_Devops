@@ -110,22 +110,31 @@ sonar {
     }
 }
 
-task jacocoTestReport(type: JacocoReport,
-        dependsOn: 'testDebugUnitTest') {
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
     reports {
         xml.required = true
         html.required = true
     }
-    def fileFilter = ['**/R.class', '**/R$*.class',
-                      '**/BuildConfig.*', '**/Manifest*.*']
+
+    def fileFilter = [
+            '**/R.class', '**/R$*.class', '**/BuildConfig.*',
+            '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*'
+    ]
+
     def debugTree = fileTree(
-            dir: "${buildDir}/intermediates/javac/debug",
+            dir: "${buildDir}/intermediates/javac/debug/compileDebugJavaWithJavac/classes",
             excludes: fileFilter
     )
-    sourceDirectories.setFrom(files(["src/main/java"]))
+
+    def mainSrc = "${project.projectDir}/src/main/java"
+
+    sourceDirectories.setFrom(files([mainSrc]))
     classDirectories.setFrom(files([debugTree]))
     executionData.setFrom(fileTree(
-            dir: "$buildDir",
-            includes: ["jacoco/testDebugUnitTest.exec"]
+            dir: "${buildDir}",
+            includes: [
+                    "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
+                    "jacoco/testDebugUnitTest.exec"
+            ]
     ))
 }
