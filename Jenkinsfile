@@ -65,7 +65,7 @@ pipeline {
                                 -Dsonar.projectName=Endo-mHealth ^
                                 -Dsonar.host.url=http://localhost:9000 ^
                                 -Dsonar.token=%SONAR_TOKEN% ^
-                                -Dsonar.coverage.jacoco.xmlReportPaths=app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml ^
+                                -Dsonar.coverage.jacoco.xmlReportPaths=%WORKSPACE%\\app\\build\\reports\\jacoco\\jacocoTestReport\\jacocoTestReport.xml ^
                                 --no-daemon ^
                                 --info"""
                         }       // ← ferme withEnv
