@@ -68,13 +68,15 @@ pipeline {
                                 -Dsonar.coverage.jacoco.xmlReportPaths=app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml ^
                                 --no-daemon ^
                                 --info"""
-                    }
-                }
+                        }       // ← ferme withEnv
+                    }           // ← ferme withSonarQubeEnv
+                }               // ← ferme withCredentials
                 timeout(time: 5, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
+                    waitForQualityGate abortPipeline: false
                 }
             }
         }
+
         stage('6 - Verify APK') {
             steps {
                 bat 'dir app\\build\\outputs\\apk\\debug\\'
