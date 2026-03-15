@@ -1,7 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
+    id 'org.sonarqube'
 }
+apply plugin: 'jacoco'
 
 android {
     namespace 'com.spmenais.paincare'
@@ -18,11 +20,22 @@ android {
     }
 
     buildTypes {
+        debug {
+            testCoverageEnabled true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -82,4 +95,17 @@ dependencies {
     implementation 'com.github.prolificinteractive:material-calendarview:1.6.0'
 
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
+}
+
+sonar {
+    properties {
+        property "sonar.projectKey",   "endo-mhealth"
+        property "sonar.projectName",  "Endo mHealth"
+        property "sonar.host.url",     "http://localhost:9000"
+        property "sonar.sources",      "app/src/main/java"
+        property "sonar.tests",        "app/src/test/java"
+        property "sonar.java.source",  "17"
+        property "sonar.coverage.jacoco.xmlReportPaths",
+                "app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
+    }
 }
