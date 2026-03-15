@@ -50,19 +50,21 @@ pipeline {
         stage('4 - SonarQube') {
             steps {
                 withSonarQubeEnv('SonarQube-Local') {
-                    bat """gradlew.bat sonar ^
-                        -Dsonar.projectKey=endo-mhealth ^
-                        -Dsonar.projectName=Endo-mHealth ^
-                        -Dsonar.host.url=%SONAR_HOST_URL% ^
-                        -Dsonar.token=%SONAR_TOKEN% ^
-                        --no-daemon"""
+                    withEnv(["JAVA_HOME=C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.18.8-hotspot",
+                             "PATH=C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.18.8-hotspot\\bin;${env.PATH}"]) {
+                        bat """gradlew.bat sonar ^
+                            -Dsonar.projectKey=endo-mhealth ^
+                            -Dsonar.projectName=Endo-mHealth ^
+                            -Dsonar.host.url=http://localhost:9000 ^
+                            -Dsonar.token=%SONAR_TOKEN% ^
+                            --no-daemon"""
+                    }
                 }
                 timeout(time: 5, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
             }
         }
-
         stage('5 - Verify APK') {
             steps {
                 bat 'dir app\\build\\outputs\\apk\\debug\\'
