@@ -65,9 +65,9 @@ pipeline {
                                 -Dsonar.projectName=Endo-mHealth ^
                                 -Dsonar.host.url=http://localhost:9000 ^
                                 -Dsonar.token=%SONAR_TOKEN% ^
+                                -Dsonar.coverage.jacoco.xmlReportPaths=app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml ^
                                 --no-daemon ^
                                 --info"""
-                        }
                     }
                 }
                 timeout(time: 5, unit: 'MINUTES') {
