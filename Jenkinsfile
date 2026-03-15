@@ -58,7 +58,8 @@ pipeline {
                                 -Dsonar.projectName=Endo-mHealth ^
                                 -Dsonar.host.url=http://localhost:9000 ^
                                 -Dsonar.token=%SONAR_TOKEN% ^
-                                --no-daemon"""
+                                --no-daemon ^
+                                --info"""
                         }
                     }
                 }
