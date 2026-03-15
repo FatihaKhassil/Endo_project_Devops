@@ -47,7 +47,14 @@ pipeline {
             }
         }
 
-        stage('4 - SonarQube') {
+        stage('4 - Coverage JaCoCo') {
+            steps {
+                bat 'gradlew.bat jacocoTestReport --no-daemon'
+                echo "Rapport JaCoCo genere"
+            }
+        }
+
+        stage('5 - SonarQube') {
             steps {
                 withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                     withSonarQubeEnv('SonarQube-Local') {
@@ -68,7 +75,7 @@ pipeline {
                 }
             }
         }
-        stage('5 - Verify APK') {
+        stage('6 - Verify APK') {
             steps {
                 bat 'dir app\\build\\outputs\\apk\\debug\\'
                 echo "APK OK"
