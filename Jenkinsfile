@@ -78,6 +78,42 @@ pipeline {
             }
         }
 
+        stage('6 - Docker Build et Push') {
+                    steps {
+                        bat "docker build -t %DOCKER_IMAGE%:%DOCKER_TAG% ."
+                        bat "docker tag %DOCKER_IMAGE%:%DOCKER_TAG% %DOCKER_IMAGE%:latest"
+                        withCredentials([usernamePassword(
+                            credentialsId: 'dockerhub-credentials',
+                            usernameVariable: 'DOCKER_USER',
+                            passwordVariable: 'DOCKER_PASS')]) {
+                            bat 'echo %DOCKER_PASS%| docker login -u %DOCKER_USER% --password-stdin'
+                            bat "docker push %DOCKER_IMAGE%:%DOCKER_TAG%"
+                            bat "docker push %DOCKER_IMAGE%:latest"
+                        }
+                        echo "Image Docker poussee sur Docker Hub"
+                    }
+                    post {
+                        failure {
+                            echo "ECHEC Docker - verifier que Docker Desktop est ouvert"
+                        }
+                    }
+                }
+
+                stage('7 - Deploy Kubernetes') {
+                    steps {
+                        bat 'kubectl apply -f k8s\\deployment.yaml'
+                        bat 'kubectl apply -f k8s\\service.yaml'
+                        bat 'kubectl rollout status deployment/endo-deployment -n mhealth --timeout=120s'
+                        echo "Deploiement Kubernetes OK"
+                    }
+                    post {
+                        failure {
+                            bat 'kubectl rollout undo deployment/endo-deployment -n mhealth'
+                            echo "ROLLBACK automatique declenche !"
+                        }
+                    }
+                }
+
         stage('6 - Verify APK') {
             steps {
                 bat 'dir app\\build\\outputs\\apk\\debug\\'
