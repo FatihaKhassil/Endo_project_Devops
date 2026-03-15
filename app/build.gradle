@@ -102,10 +102,10 @@ sonar {
         property "sonar.projectKey",   "endo-mhealth"
         property "sonar.projectName",  "Endo mHealth"
         property "sonar.host.url",     "http://localhost:9000"
-        property "sonar.sources",      "app/src/main/java"
-        property "sonar.tests",        "app/src/test/java"
+        property "sonar.sources",      "src/main/java"
+        property "sonar.tests",        "src/test/java"
         property "sonar.java.source",  "17"
         property "sonar.coverage.jacoco.xmlReportPaths",
-                "app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
+                "build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
     }
 }
