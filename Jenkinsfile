@@ -4,6 +4,8 @@ pipeline {
     environment {
         SONAR_HOST_URL = "http://localhost:9000"
         ANDROID_HOME   = "C:\\Users\\PC\\AppData\\Local\\Android\\Sdk"
+        JAVA_HOME      = "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.18.8-hotspot"
+        PATH           = "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.18.8-hotspot\\bin;${env.PATH}"
     }
 
     stages {
