@@ -5,7 +5,7 @@ ENV PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/plat
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
-    apt-get install -y wget unzip curl && \
+    apt-get install -y wget unzip curl dos2unix && \
     rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p $ANDROID_SDK_ROOT/cmdline-tools && \
@@ -21,7 +21,7 @@ RUN sdkmanager "platforms;android-34" "build-tools;34.0.0" "platform-tools"
 
 WORKDIR /app
 COPY . .
-RUN chmod +x gradlew
+RUN dos2unix gradlew && chmod +x gradlew
 RUN ./gradlew assembleDebug --no-daemon
 
 FROM python:3.11-alpine
