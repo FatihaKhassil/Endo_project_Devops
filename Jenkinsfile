@@ -79,25 +79,27 @@ pipeline {
         }
 
         stage('6 - Docker Build et Push') {
-                    steps {
-                        bat "docker build -t %DOCKER_IMAGE%:%DOCKER_TAG% ."
-                        bat "docker tag %DOCKER_IMAGE%:%DOCKER_TAG% %DOCKER_IMAGE%:latest"
-                        withCredentials([usernamePassword(
-                            credentialsId: 'dockerhub-credentials',
-                            usernameVariable: 'DOCKER_USER',
-                            passwordVariable: 'DOCKER_PASS')]) {
-                            bat 'echo %DOCKER_PASS%| docker login -u %DOCKER_USER% --password-stdin'
-                            bat "docker push %DOCKER_IMAGE%:%DOCKER_TAG%"
-                            bat "docker push %DOCKER_IMAGE%:latest"
-                        }
-                        echo "Image Docker poussee sur Docker Hub"
-                    }
-                    post {
-                        failure {
-                            echo "ECHEC Docker - verifier que Docker Desktop est ouvert"
-                        }
-                    }
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS')]) {
+                    bat """
+                        docker build -t fatihakhassil/endo-mhealth:%BUILD_NUMBER% .
+                        docker tag fatihakhassil/endo-mhealth:%BUILD_NUMBER% fatihakhassil/endo-mhealth:latest
+                        echo %DOCKER_PASS%| docker login -u %DOCKER_USER% --password-stdin
+                        docker push fatihakhassil/endo-mhealth:%BUILD_NUMBER%
+                        docker push fatihakhassil/endo-mhealth:latest
+                    """
                 }
+                echo "Image Docker poussee sur Docker Hub"
+            }
+            post {
+                failure {
+                    echo "ECHEC Docker - verifier que Docker Desktop est ouvert"
+                }
+            }
+        }
 
                 stage('7 - Deploy Kubernetes') {
                     steps {
