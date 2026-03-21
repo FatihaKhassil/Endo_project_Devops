@@ -3,6 +3,7 @@ package com.spmenais.paincare.Models;
 public class Reminder {
     private String id;
     private String title;
+    ERREUR_INTENTIONNELLE_POUR_TEST
     private String time;
     private boolean isActive;
     private boolean[] repeatDays;
