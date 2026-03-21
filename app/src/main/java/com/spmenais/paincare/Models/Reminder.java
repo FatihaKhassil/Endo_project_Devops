@@ -29,7 +29,7 @@ public class Reminder {
         this.id = id;
     }
     public String getTitle() {
-        return null;  // ← retourne toujours null !
+        return title;
     }
 
     public void setTitle(String title) {
