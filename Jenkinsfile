@@ -73,7 +73,7 @@ pipeline {
                     }           // ← ferme withSonarQubeEnv
                 }               // ← ferme withCredentials
                 timeout(time: 5, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: false
+                    waitForQualityGate abortPipeline: true  // ← true !
                 }
             }
         }
