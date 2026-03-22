@@ -67,11 +67,12 @@ pipeline {
                                 -Dsonar.token=%SONAR_TOKEN% ^
                                 -Dsonar.coverage.jacoco.xmlReportPaths=%WORKSPACE%\\app\\build\\reports\\jacoco\\jacocoTestReport\\jacocoTestReport.xml ^
                                 -Dsonar.coverage.exclusions=**/Activities/**,**/*Activity*.java,**/Adapters/**,**/Fragments/** ^
+                                -Dsonar.scanner.force-deprecated-java-version-grace-period=true ^
                                 --no-daemon ^
                                 --info"""
-                        }       // ← ferme withEnv
-                    }           // ← ferme withSonarQubeEnv
-                }               // ← ferme withCredentials
+                        }
+                    }
+                }
                 timeout(time: 5, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: false
                 }
