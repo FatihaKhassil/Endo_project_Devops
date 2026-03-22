@@ -65,45 +65,4 @@ public class DataModel {
     public List<String> getSelectedOptions() {
         return selectedOptions;
     }
-
-    // ========= CODE SMELLS POUR BUILD #8 =========
-
-    // Smell 1 : catch vide
-    public void methodeSmell1() {
-        try {
-            String s = getTitle();
-        } catch (Exception e) {
-            // vide intentionnellement
-        }
-    }
-
-    // Smell 2 : variables inutilisées
-    public void methodeSmell2() {
-        String variableInutilisee = "jamais utilisee";
-        int compteur = 0;
-        List<String> listeVide = new ArrayList<>();
-    }
-
-    // Smell 3 : méthodes dupliquées
-    public String getTitleCopy1() { return title; }
-    public String getTitleCopy2() { return title; }
-    public String getTitleCopy3() { return title; }
-
-    // Smell 4 : complexité cyclomatique élevée
-    public String analyseComplexe(int a, int b, int c, int d, int e) {
-        if (a > 0) {
-            if (b > 0) {
-                if (c > 0) {
-                    if (d > 0) {
-                        if (e > 0) {
-                            return "tous positifs";
-                        } else { return "e negatif"; }
-                    } else { return "d negatif"; }
-                } else { return "c negatif"; }
-            } else { return "b negatif"; }
-        }
-        return "a negatif";
-    }
-
-    // ========= FIN CODE SMELLS =========
 }
